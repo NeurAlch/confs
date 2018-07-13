@@ -1,7 +1,7 @@
 import { DuplicatedDefaultError } from "./errors/DuplicatedDefaultError";
 import { DuplicatedRequiredError } from "./errors/DuplicatedRequiredError";
 import { MissingExitFunction } from "./errors/MissingExitFunction";
-interface IConfuOptions {
+interface IConfsOptions {
     defaults?: {
         boolean?: {
             [index: string]: boolean;
@@ -27,7 +27,7 @@ interface IConfuOptions {
     transformNumberStrings?: boolean;
     exit?(message: string): void;
 }
-interface IConfu {
+interface IConfs {
     B: getBooleanFn;
     N: getNumberFn;
     S: getStringFn;
@@ -38,8 +38,8 @@ interface IConfu {
 declare type getBooleanFn = (config: string) => boolean | undefined;
 declare type getNumberFn = (config: string) => number | undefined;
 declare type getStringFn = (config: string) => string | undefined;
-declare const getStringFn: (options: IConfuOptions) => getStringFn;
-declare const getBooleanFn: (options: IConfuOptions) => getBooleanFn;
-declare const getNumberFn: (options: IConfuOptions) => getNumberFn;
-declare const confu: (opts: IConfuOptions) => IConfu;
-export { confu, IConfuOptions, DuplicatedRequiredError, DuplicatedDefaultError, MissingExitFunction, };
+declare const getStringFn: (options: IConfsOptions) => getStringFn;
+declare const getBooleanFn: (options: IConfsOptions) => getBooleanFn;
+declare const getNumberFn: (options: IConfsOptions) => getNumberFn;
+declare const confs: (opts: IConfsOptions) => IConfs;
+export { confs, IConfsOptions, DuplicatedRequiredError, DuplicatedDefaultError, MissingExitFunction, };

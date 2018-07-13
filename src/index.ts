@@ -2,7 +2,7 @@ import { DuplicatedDefaultError } from "./errors/DuplicatedDefaultError";
 import { DuplicatedRequiredError } from "./errors/DuplicatedRequiredError";
 import { MissingExitFunction } from "./errors/MissingExitFunction";
 
-interface IConfuOptions {
+interface IConfsOptions {
     defaults?: {
         boolean?: {
             [index: string]: boolean;
@@ -29,7 +29,7 @@ interface IConfuOptions {
     exit?(message: string): void;
 }
 
-interface IConfu {
+interface IConfs {
     B: getBooleanFn;
     N: getNumberFn;
     S: getStringFn;
@@ -55,7 +55,7 @@ const getDuplicated = (values: string[]): string[] => {
     });
 };
 
-const getStringFn = (options: IConfuOptions): getStringFn => (config: string): string | undefined => {
+const getStringFn = (options: IConfsOptions): getStringFn => (config: string): string | undefined => {
 
     let value: number | boolean | string | undefined;
 
@@ -75,7 +75,7 @@ const getStringFn = (options: IConfuOptions): getStringFn => (config: string): s
 
 };
 
-const getBooleanFn = (options: IConfuOptions): getBooleanFn => (config: string): boolean | undefined => {
+const getBooleanFn = (options: IConfsOptions): getBooleanFn => (config: string): boolean | undefined => {
 
     let value: number | boolean | string | undefined;
 
@@ -101,7 +101,7 @@ const getBooleanFn = (options: IConfuOptions): getBooleanFn => (config: string):
 
 };
 
-const getNumberFn = (options: IConfuOptions): getNumberFn => (config: string): number | undefined => {
+const getNumberFn = (options: IConfsOptions): getNumberFn => (config: string): number | undefined => {
 
     let value: string | number | boolean | undefined;
 
@@ -121,7 +121,7 @@ const getNumberFn = (options: IConfuOptions): getNumberFn => (config: string): n
 
 };
 
-const checkRequired = (options: IConfuOptions): void => {
+const checkRequired = (options: IConfsOptions): void => {
 
     const requiredN = options.required && options.required.number ? options.required.number : [];
     const requiredS = options.required && options.required.string ? options.required.string : [];
@@ -157,7 +157,7 @@ const checkRequired = (options: IConfuOptions): void => {
 
 };
 
-const checkDuplicatedDefaults = (options: IConfuOptions): void => {
+const checkDuplicatedDefaults = (options: IConfsOptions): void => {
 
     const defaultN = options.defaults && options.defaults.number ? options.defaults.number : [];
     const defaultS = options.defaults && options.defaults.string ? options.defaults.string : [];
@@ -177,7 +177,7 @@ const checkDuplicatedDefaults = (options: IConfuOptions): void => {
 
 };
 
-const confu = (opts: IConfuOptions): IConfu => {
+const confs = (opts: IConfsOptions): IConfs => {
 
     // TODO: Check that env is an object
     // TODO: Check that required is an object, also its children are lists of strings
@@ -257,8 +257,8 @@ const confu = (opts: IConfuOptions): IConfu => {
 };
 
 export {
-    confu,
-    IConfuOptions,
+    confs,
+    IConfsOptions,
     DuplicatedRequiredError,
     DuplicatedDefaultError,
     MissingExitFunction,

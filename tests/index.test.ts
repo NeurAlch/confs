@@ -8,9 +8,9 @@ import * as sinonChai from "sinon-chai";
 chai.use(sinonChai);
 const expect = chai.expect;
 
-import { confu, IConfuOptions } from "../src/index";
+import { confs, IConfsOptions } from "../src/index";
 
-const base: IConfuOptions = {
+const base: IConfsOptions = {
     defaults: {
         boolean: {},
         number: {},
@@ -25,7 +25,7 @@ const base: IConfuOptions = {
     },
 };
 
-describe("Confu", () => {
+describe("Confs", () => {
 
     it("Does not mutate options object passed", () => {
 
@@ -33,13 +33,13 @@ describe("Confu", () => {
             yes: "true",
         };
 
-        const configOne: IConfuOptions = {
+        const configOne: IConfsOptions = {
             ...base,
             env: ourEnv,
             transformBooleanStrings: true,
         };
 
-        confu(configOne);
+        confs(configOne);
 
         expect(configOne.throwOnNotFound).to.be.undefined;
         expect(configOne.exitOnMissingRequired).to.be.undefined;
@@ -49,27 +49,27 @@ describe("Confu", () => {
 
     it("Checks for missing exit function when exitOnRequiredMissing is default or true", () => {
 
-        const configOne: IConfuOptions = { ...base };
+        const configOne: IConfsOptions = { ...base };
 
         // tslint:disable-next-line:no-dynamic-delete no-string-literal
         delete configOne["exit"];
 
-        expect(() => confu(configOne)).to.throw("Missing exit function");
+        expect(() => confs(configOne)).to.throw("Missing exit function");
 
     });
 
     it("Checks for duplicate required options", () => {
 
-        const configOne: IConfuOptions = {...base, required: {
+        const configOne: IConfsOptions = {...base, required: {
                 boolean: ["one"],
                 number: ["one", "two", "three"],
                 string: ["one", "three"],
             },
         };
 
-        expect(() => confu(configOne)).to.throw("Found duplicated required options: one, three");
+        expect(() => confs(configOne)).to.throw("Found duplicated required options: one, three");
 
-        const configTwo: IConfuOptions = {
+        const configTwo: IConfsOptions = {
             ...base, required: {
                 boolean: ["two"],
                 number: ["one", "two", "three"],
@@ -77,13 +77,13 @@ describe("Confu", () => {
             },
         };
 
-        expect(() => confu(configTwo)).to.throw("Found duplicated required options: two");
+        expect(() => confs(configTwo)).to.throw("Found duplicated required options: two");
 
     });
 
     it("Checks for duplicate default options", () => {
 
-        const configOne: IConfuOptions = {
+        const configOne: IConfsOptions = {
             ...base,
             defaults: {
                 boolean: {
@@ -99,7 +99,7 @@ describe("Confu", () => {
             },
         };
 
-        expect(() => confu(configOne)).to.throw("Found duplicated default options: one, two");
+        expect(() => confs(configOne)).to.throw("Found duplicated default options: one, two");
 
     });
 
@@ -111,7 +111,7 @@ describe("Confu", () => {
 
         sinon.spy(fn, "exit");
 
-        const configOne: IConfuOptions = {
+        const configOne: IConfsOptions = {
             ...base,
             exit: fn.exit,
             required: {
@@ -121,7 +121,7 @@ describe("Confu", () => {
             },
         };
 
-        confu(configOne);
+        confs(configOne);
 
         expect(fn.exit).to.have.been.calledWith("Option one not found");
 
@@ -129,7 +129,7 @@ describe("Confu", () => {
 
     it("Throws for missing required options when exitOnMissingRequired is false", () => {
 
-        const configOne: IConfuOptions = {
+        const configOne: IConfsOptions = {
             ...base,
             exitOnMissingRequired: false,
             required: {
@@ -139,14 +139,14 @@ describe("Confu", () => {
             },
         };
 
-        expect(() => confu(configOne)).to.throw("Option one not found");
+        expect(() => confs(configOne)).to.throw("Option one not found");
 
     });
 
     describe("Boolean configs", () => {
 
         // @ts-ignore
-        const configOne: IConfuOptions = {
+        const configOne: IConfsOptions = {
             ...base,
             defaults: {
                 boolean: {
@@ -170,7 +170,7 @@ describe("Confu", () => {
             },
         };
 
-        const config = confu(configOne);
+        const config = confs(configOne);
 
         it("Gets the ENV value", () => {
             expect(config.B("tired")).to.be.false;
@@ -199,13 +199,13 @@ describe("Confu", () => {
 
         it("Throws when throwOnNotFound option is set to true", () => {
 
-            const configTwo: IConfuOptions = {
+            const configTwo: IConfsOptions = {
                 ...base,
                 ...configOne,
                 throwOnNotFound: true,
             };
 
-            const config2 = confu(configTwo);
+            const config2 = confs(configTwo);
 
             expect(() => config2.B("cow")).to.throw("Did not find BOOLEAN option cow");
 
@@ -213,7 +213,7 @@ describe("Confu", () => {
 
         it("Converts boolean string values to actual boolean values", () => {
 
-            const configTwo: IConfuOptions = {
+            const configTwo: IConfsOptions = {
                 ...base,
                 env: {
                     no: "false",
@@ -223,7 +223,7 @@ describe("Confu", () => {
                 transformBooleanStrings: true,
             };
 
-            const config2 = confu(configTwo);
+            const config2 = confs(configTwo);
 
             expect(config2.B("no")).to.be.false;
             expect(config2.B("yes")).to.be.true;
@@ -235,7 +235,7 @@ describe("Confu", () => {
 
     describe("String configs", () => {
 
-        const configOne: IConfuOptions = {
+        const configOne: IConfsOptions = {
             ...base,
             defaults: {
                 boolean: {},
@@ -260,7 +260,7 @@ describe("Confu", () => {
             },
         };
 
-        let config = confu(configOne);
+        let config = confs(configOne);
 
         it("Gets the ENV value", () => {
             expect(config.S("happy")).to.be.equal("yes");
@@ -284,13 +284,13 @@ describe("Confu", () => {
 
         it("Throws when throwOnNotFound option is set to true", () => {
 
-            const configTwo: IConfuOptions = {
+            const configTwo: IConfsOptions = {
                 ...base,
                 ...configOne,
                 throwOnNotFound: true,
             };
 
-            config = confu(configTwo);
+            config = confs(configTwo);
 
             expect(() => config.S("cow")).to.throw("Did not find STRING option cow");
 
@@ -300,7 +300,7 @@ describe("Confu", () => {
 
     describe("Number configs", () => {
 
-        const configOne: IConfuOptions = {
+        const configOne: IConfsOptions = {
             ...base,
             defaults: {
                 boolean: {},
@@ -327,7 +327,7 @@ describe("Confu", () => {
             },
         };
 
-        const config = confu(configOne);
+        const config = confs(configOne);
 
         it("Gets the ENV value", () => {
             expect(config.N("happy")).to.be.equal(100);
@@ -355,14 +355,14 @@ describe("Confu", () => {
 
         it("Transforms string numbers to actual numbers when using transformNumberStrings = true", () => {
 
-            const configTwo: IConfuOptions = {
+            const configTwo: IConfsOptions = {
                 ...base,
                 ...configOne,
                 throwOnNotFound: true,
                 transformNumberStrings: true,
             };
 
-            const config2 = confu(configTwo);
+            const config2 = confs(configTwo);
 
             expect(config2.N("two")).to.equal(2);
             expect(config2.N("half")).to.equal(0.5);
@@ -376,13 +376,13 @@ describe("Confu", () => {
 
         it("Throws when throwOnNotFound option is set to true", () => {
 
-            const configTwo: IConfuOptions = {
+            const configTwo: IConfsOptions = {
                 ...base,
                 ...configOne,
                 throwOnNotFound: true,
             };
 
-            const config2 = confu(configTwo);
+            const config2 = confs(configTwo);
 
             expect(() => config2.N("cow")).to.throw("Did not find NUMBER option cow");
 

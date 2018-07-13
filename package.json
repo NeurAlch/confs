@@ -1,9 +1,9 @@
 {
-	"name": "confu",
+	"name": "@pablorosales/confs",
 	"version": "0.10.0",
 	"description": "Configuration for node and the browser",
 	"license": "MIT",
-	"repository": "https://github.com/pablorosales/confu",
+	"repository": "https://github.com/pablorosales/confs",
 	"author": {
 		"name": "Pablo Rosales",
 		"email": "me@pablorosales.xyz",

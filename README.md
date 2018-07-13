@@ -1,4 +1,4 @@
-# conf [![Build Status: Linux and macOS](https://travis-ci.org/PabloRosales/confu.svg?branch=master)](https://travis-ci.org/PabloRosales/confu)
+# confs [![Build Status: Linux and macOS](https://travis-ci.org/PabloRosales/confs.svg?branch=master)](https://travis-ci.org/PabloRosales/confs)
 
 > Simple Configuration with defaults and required options
 
@@ -15,7 +15,7 @@ Does not mutate the objects you pass as options.
 ## Install
 
 ```
-$ npm install confu
+$ npm install confs
 ```
 <a href="https://www.patreon.com/pablorosales">
 	<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
@@ -24,8 +24,8 @@ $ npm install confu
 ## Usage
 
 ```js
-const confu = require('confu');
-const config = confu({
+const confs = require('confs');
+const config = confs({
     env: process.env,
     transformBooleanStrings: true,
     transformNumberStrings: true,
@@ -35,7 +35,7 @@ const config = confu({
     },
     defaults: {
         string: {
-            name: "Confu",
+            name: "Confs",
         },
         boolean: {
             yes: "true",
@@ -48,7 +48,7 @@ const config = confu({
 
 
 console.log(config('name'));
-//=> "Confu"
+//=> "Confs"
 
 console.log(config('yes'));
 //=> true
@@ -72,9 +72,9 @@ If set to true will transform all values from *env* to number, only ones that do
 Will use your defined exit function when a required value is missing, useful to exit from node process with something like:
 
 ```js
-const confu = require('confu').confu;
+const confs = require('confs').confs;
 
-const config = confu({
+const config = confs({
     env: {},
     exit: (message) => {
         console.error(message);
@@ -100,7 +100,7 @@ Raises an error when an option is not found in your *env* object.
 Your default options, separated by number, string and boolean values.
 
 ```js
-const config = confu({
+const config = confs({
     // ...
     defaults: {
         string: {
@@ -121,7 +121,7 @@ const config = confu({
 Your required options, separated by number, string and boolean values.
 
 ```js
-const config = confu({
+const config = confs({
     // ...
     required: {
         string: ["host"],
@@ -141,8 +141,8 @@ Can be used with Dotenv:
 // npm install --save dotenv
 require('dotenv').config();
 
-const confu = require("confu").confu;
-const config = confu({
+const confs = require("confs").confs;
+const config = confs({
     env: process.env,
     // ...
 });
