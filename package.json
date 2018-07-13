@@ -3,7 +3,7 @@
 	"version": "0.10.0",
 	"description": "Configuration for node and the browser",
 	"license": "MIT",
-	"repository": "pablorosales/confu",
+	"repository": "https://github.com/pablorosales/confu",
 	"author": {
 		"name": "Pablo Rosales",
 		"email": "me@pablorosales.xyz",
