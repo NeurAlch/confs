@@ -96,7 +96,7 @@ const config = confs({
 });
 
 
-config('name');
+config.S('name');
 //=> Will run exit, ending the program
 ```
 
