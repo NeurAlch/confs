@@ -1,4 +1,4 @@
-# conf [![Build Status: Linux and macOS](https://travis-ci.org/pablorosales/confu.svg?branch=master)](https://travis-ci.org/pablorosales/confu)
+# conf [![Build Status: Linux and macOS](https://travis-ci.org/PabloRosales/confu.svg?branch=master)](https://travis-ci.org/PabloRosales/confu)
 
 > Simple Configuration with defaults and required options
 
