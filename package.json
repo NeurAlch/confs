@@ -1,6 +1,6 @@
 {
 	"name": "confs",
-	"version": "0.10.2",
+	"version": "0.10.3",
 	"description": "Configuration for node and the browser",
 	"license": "MIT",
 	"repository": "https://github.com/pablorosales/confs",
@@ -9,8 +9,8 @@
 		"email": "me@pablorosales.xyz",
 		"url": "https://pablorosales.xyz"
 	},
-	"main": "./lib/index.js",
-	"typings": "./lib/index.d.ts",
+	"main": "./lib/src/index.js",
+	"typings": "./lib/src/index.d.ts",
 	"engines": {
 		"node": ">=6"
 	},
@@ -21,8 +21,8 @@
 		"build": "tsc"
 	},
 	"files": [
-		"lib/index.js",
-		"lib/index.d.ts"
+		"lib/src/index.js",
+		"lib/src/index.d.ts"
 	],
 	"keywords": [
 		"conf",
