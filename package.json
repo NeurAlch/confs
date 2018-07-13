@@ -1,6 +1,6 @@
 {
-	"name": "@pablorosales/confs",
-	"version": "0.10.0",
+	"name": "confs",
+	"version": "0.10.2",
 	"description": "Configuration for node and the browser",
 	"license": "MIT",
 	"repository": "https://github.com/pablorosales/confs",
