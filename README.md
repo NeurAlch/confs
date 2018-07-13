@@ -47,13 +47,22 @@ const config = confs({
 });
 
 
-console.log(config('name'));
+console.log(config.S('name'));
 //=> "Confs"
 
-console.log(config('yes'));
+console.log(config.string('name'));
+//=> "Confs"
+
+console.log(config.B('yes'));
 //=> true
 
-console.log(config('one'));
+console.log(config.boolean('yes'));
+//=> true
+
+console.log(config.N('one'));
+//=> 1
+
+console.log(config.number('one'));
 //=> 1
 ```
 
@@ -152,7 +161,47 @@ const config = confs({
 
 Your exit function, only used when *exitOnMissingRequired* is set as true.
 
-Usually you want to end your program (Node) when some required configuration is not found. See *exitOnMissingRequired* for an example.
+Usually you want to end your program (Node) when some required configuration is not found.
+
+See *exitOnMissingRequired* for an example.
+
+## Methods
+
+### S / string
+
+Used to get a config option that is a string.
+
+```js
+config.S("name");
+// => "Confs"
+
+config.string("name");
+// => "Confs"
+```
+
+### N / number
+
+Used to get a config option that is a number.
+
+```js
+config.N("port");
+// => 3306
+
+config.number("port");
+// => 3306
+```
+
+### B / boolean
+
+Used to get a config option that is a number.
+
+```js
+config.B("verbose");
+// => true
+
+config.boolean("verbose");
+// => true
+```
 
 ## License
 
