@@ -1,3 +1,4 @@
 node_modules
 wallaby.js
 package-lock.json
+lib

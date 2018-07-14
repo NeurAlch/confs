@@ -10,8 +10,6 @@ Written in TypeScript but works great with Vanilla JavaScript.
 
 Does not mutate the objects you pass as options.
 
-*Currently at version 0.10.0, but already used in production.*
-
 ## Install
 
 ```
