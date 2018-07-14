@@ -1,6 +1,6 @@
 {
 	"name": "confs",
-	"version": "0.10.8",
+	"version": "0.10.9",
 	"description": "Simple Configuration with defaults and required options",
 	"license": "MIT",
 	"repository": "https://github.com/pablorosales/confs",
@@ -16,7 +16,8 @@
 	},
 	"scripts": {
 		"setup": "npm install",
-		"test": "mocha --require ts-node/register -r tsconfig.test.json ./tests/index.test.ts",
+		"test": "mocha ./tests/index.test.js",
+		"build-watch": "tsc --watch",
 		"build": "tsc"
 	},
 	"files": [

@@ -1,23 +1,22 @@
-// tslint:disable:no-implicit-dependencies newline-per-chained-call no-unused-expression no-magic-numbers
+require("mocha");
 
-import "mocha";
-import * as chai from "chai";
-import * as sinon from "sinon";
-import { confs, IConfsOptions } from "../src/index";
-import sinonChai from "sinon-chai";
+const chai = require("chai");
+const sinon = require("sinon");
+const confs = require("../lib/index").confs;
+const sinonChai = require("sinon-chai");
 
 chai.use(sinonChai);
 
 const expect = chai.expect;
 
-const base: IConfsOptions = {
+const base = {
     defaults: {
         boolean: {},
         number: {},
         string: {},
     },
     env: {},
-    exit: (message: string): string => (message),
+    exit: (message) => (message),
     required: {
         boolean: [],
         number: [],
@@ -33,7 +32,7 @@ describe("Confs", () => {
             yes: "true",
         };
 
-        const configOne: IConfsOptions = {
+        const configOne = {
             ...base,
             env: ourEnv,
             transformBooleanStrings: true,
@@ -49,9 +48,8 @@ describe("Confs", () => {
 
     it("Checks for missing exit function when exitOnRequiredMissing is default or true", () => {
 
-        const configOne: IConfsOptions = { ...base };
+        const configOne = { ...base };
 
-        // tslint:disable-next-line:no-dynamic-delete no-string-literal
         delete configOne["exit"];
 
         expect(() => confs(configOne)).to.throw("Missing exit function");
@@ -60,7 +58,7 @@ describe("Confs", () => {
 
     it("Checks for duplicate required options", () => {
 
-        const configOne: IConfsOptions = {...base, required: {
+        const configOne = {...base, required: {
                 boolean: ["one"],
                 number: ["one", "two", "three"],
                 string: ["one", "three"],
@@ -69,7 +67,7 @@ describe("Confs", () => {
 
         expect(() => confs(configOne)).to.throw("Found duplicated required options: one, three");
 
-        const configTwo: IConfsOptions = {
+        const configTwo = {
             ...base, required: {
                 boolean: ["two"],
                 number: ["one", "two", "three"],
@@ -83,7 +81,7 @@ describe("Confs", () => {
 
     it("Checks for duplicate default options", () => {
 
-        const configOne: IConfsOptions = {
+        const configOne = {
             ...base,
             defaults: {
                 boolean: {
@@ -106,12 +104,12 @@ describe("Confs", () => {
     it("Exits when missing required options", () => {
 
         const fn = {
-            exit: (message: string): string => message,
+            exit: (message) => message,
         };
 
         sinon.spy(fn, "exit");
 
-        const configOne: IConfsOptions = {
+        const configOne = {
             ...base,
             exit: fn.exit,
             required: {
@@ -129,7 +127,7 @@ describe("Confs", () => {
 
     it("Throws for missing required options when exitOnMissingRequired is false", () => {
 
-        const configOne: IConfsOptions = {
+        const configOne = {
             ...base,
             exitOnMissingRequired: false,
             required: {
@@ -145,8 +143,7 @@ describe("Confs", () => {
 
     describe("Boolean configs", () => {
 
-        // @ts-ignore
-        const configOne: IConfsOptions = {
+        const configOne = {
             ...base,
             defaults: {
                 boolean: {
@@ -199,7 +196,7 @@ describe("Confs", () => {
 
         it("Throws when throwOnNotFound option is set to true", () => {
 
-            const configTwo: IConfsOptions = {
+            const configTwo = {
                 ...base,
                 ...configOne,
                 throwOnNotFound: true,
@@ -213,12 +210,17 @@ describe("Confs", () => {
 
         it("Converts boolean string values to actual boolean values", () => {
 
-            const configTwo: IConfsOptions = {
+            const configTwo = {
                 ...base,
                 env: {
                     no: "false",
                     ok: true,
                     yes: "true",
+                },
+                defaults: {
+                    boolean: {
+                        coffee: "true",
+                    },
                 },
                 transformBooleanStrings: true,
             };
@@ -228,6 +230,7 @@ describe("Confs", () => {
             expect(config2.B("no")).to.be.false;
             expect(config2.B("yes")).to.be.true;
             expect(config2.B("ok")).to.be.true;
+            expect(config2.B("coffee")).to.be.true;
 
         });
 
@@ -235,7 +238,7 @@ describe("Confs", () => {
 
     describe("String configs", () => {
 
-        const configOne: IConfsOptions = {
+        const configOne = {
             ...base,
             defaults: {
                 boolean: {},
@@ -284,7 +287,7 @@ describe("Confs", () => {
 
         it("Throws when throwOnNotFound option is set to true", () => {
 
-            const configTwo: IConfsOptions = {
+            const configTwo = {
                 ...base,
                 ...configOne,
                 throwOnNotFound: true,
@@ -300,7 +303,7 @@ describe("Confs", () => {
 
     describe("Number configs", () => {
 
-        const configOne: IConfsOptions = {
+        const configOne = {
             ...base,
             defaults: {
                 boolean: {},
@@ -355,18 +358,21 @@ describe("Confs", () => {
 
         it("Transforms string numbers to actual numbers when using transformNumberStrings = true", () => {
 
-            const configTwo: IConfsOptions = {
+            const configTwo = {
                 ...base,
                 ...configOne,
                 throwOnNotFound: true,
                 transformNumberStrings: true,
             };
 
+            configTwo.defaults.number.five = "5.25";
+
             const config2 = confs(configTwo);
 
             expect(config2.N("two")).to.equal(2);
             expect(config2.N("half")).to.equal(0.5);
             expect(config2.N("what")).to.equal(0);
+            expect(config2.N("five")).to.equal(5.25);
 
         });
 
@@ -376,7 +382,7 @@ describe("Confs", () => {
 
         it("Throws when throwOnNotFound option is set to true", () => {
 
-            const configTwo: IConfsOptions = {
+            const configTwo = {
                 ...base,
                 ...configOne,
                 throwOnNotFound: true,
