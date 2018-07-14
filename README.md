@@ -24,7 +24,9 @@ $ npm install confs
 ```js
 const confs = require('confs').confs;
 const config = confs({
-    env: process.env, // Assuming you have something like Dotenv
+    env: {
+        database: "some",
+    },
     transformBooleanStrings: true,
     transformNumberStrings: true,
     exitOnMissingRequired: false,
