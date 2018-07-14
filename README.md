@@ -29,39 +29,39 @@ const config = confs({
     transformNumberStrings: true,
     exitOnMissingRequired: false,
     required: {
-        string: ["name"],
+        string: ["database"],
     },
     defaults: {
         string: {
-            name: "Confs",
+            host: "localhost",
         },
         boolean: {
-            yes: "true",
+            sync: "true",
         },
         number: {
-            one: "1",
+            port: "3306",
         }
     },
 });
 
 
-console.log(config.S('name'));
-//=> "Confs"
+console.log(config.S('host'));
+//=> "localhost"
 
-console.log(config.string('name'));
-//=> "Confs"
+console.log(config.string('host'));
+//=> "localhost"
 
-console.log(config.B('yes'));
+console.log(config.B('sync'));
 //=> true
 
-console.log(config.boolean('yes'));
+console.log(config.boolean('sync'));
 //=> true
 
-console.log(config.N('one'));
-//=> 1
+console.log(config.N('port'));
+//=> 3306
 
-console.log(config.number('one'));
-//=> 1
+console.log(config.number('port'));
+//=> 3306
 ```
 
 ## Options
