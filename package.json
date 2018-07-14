@@ -1,6 +1,6 @@
 {
 	"name": "confs",
-	"version": "0.10.6",
+	"version": "0.10.7",
 	"description": "Simple Configuration with defaults and required options",
 	"license": "MIT",
 	"repository": "https://github.com/pablorosales/confs",
@@ -9,12 +9,12 @@
 		"email": "me@pablorosales.xyz",
 		"url": "https://pablorosales.xyz"
 	},
-	"main": "./lib/src/index.js",
+	"main": "./lib/index.js",
 	"typings": [
-		"./lib/src/index.d.ts",
-		"./lib/src/errors/DuplicatedDefaultError.d.ts",
-		"./lib/src/errors/DuplicatedRequiredError.d.ts",
-		"./lib/src/errors/MissingExitFunction.d.ts"
+		"./lib/index.d.ts",
+		"./lib/errors/DuplicatedDefaultError.d.ts",
+		"./lib/errors/DuplicatedRequiredError.d.ts",
+		"./lib/errors/MissingExitFunction.d.ts"
 	],
 	"engines": {
 		"node": ">=6"
