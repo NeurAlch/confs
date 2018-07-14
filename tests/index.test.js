@@ -171,27 +171,35 @@ describe("Confs", () => {
 
         it("Gets the ENV value", () => {
             expect(config.B("tired")).to.be.false;
+            expect(config.boolean("tired")).to.be.false;
         });
 
         it("Converts default values in strings to booleans when valid", () => {
             expect(config.B("no")).to.be.false;
             expect(config.B("yes")).to.be.true;
+
+            expect(config.boolean("no")).to.be.false;
+            expect(config.boolean("yes")).to.be.true;
         });
 
         it("Gets the ENV value and not the default when a default is set", () => {
             expect(config.B("happy")).to.be.true;
+            expect(config.boolean("happy")).to.be.true;
         });
 
         it("Gets the default value if not set in ENV", () => {
             expect(config.B("sad")).to.be.false;
+            expect(config.boolean("sad")).to.be.false;
         });
 
         it("Returns undefined when throwOnNotFound default value (false) is used", () => {
             expect(config.B("cow")).to.be.undefined;
+            expect(config.boolean("cow")).to.be.undefined;
         });
 
         it("Throws when value is an invalid one", () => {
             expect(() => config.B("hungry")).to.throw("Invalid value for hungry");
+            expect(() => config.boolean("hungry")).to.throw("Invalid value for hungry");
         });
 
         it("Throws when throwOnNotFound option is set to true", () => {
@@ -205,6 +213,7 @@ describe("Confs", () => {
             const config2 = confs(configTwo);
 
             expect(() => config2.B("cow")).to.throw("Did not find BOOLEAN option cow");
+            expect(() => config2.boolean("cow")).to.throw("Did not find BOOLEAN option cow");
 
         });
 
@@ -231,6 +240,11 @@ describe("Confs", () => {
             expect(config2.B("yes")).to.be.true;
             expect(config2.B("ok")).to.be.true;
             expect(config2.B("coffee")).to.be.true;
+
+            expect(config2.boolean("no")).to.be.false;
+            expect(config2.boolean("yes")).to.be.true;
+            expect(config2.boolean("ok")).to.be.true;
+            expect(config2.boolean("coffee")).to.be.true;
 
         });
 
@@ -267,22 +281,27 @@ describe("Confs", () => {
 
         it("Gets the ENV value", () => {
             expect(config.S("happy")).to.be.equal("yes");
+            expect(config.string("happy")).to.be.equal("yes");
         });
 
         it("Gets the ENV value and not the default when a default is set", () => {
             expect(config.S("name")).to.be.equal("pablo");
+            expect(config.string("name")).to.be.equal("pablo");
         });
 
         it("Gets the default value if not set in ENV", () => {
             expect(config.S("sad")).to.be.equal("nope");
+            expect(config.string("sad")).to.be.equal("nope");
         });
 
         it("Returns undefined when throwOnNotFound default value (false) is used", () => {
             expect(config.S("cow")).to.be.undefined;
+            expect(config.string("cow")).to.be.undefined;
         });
 
         it("Throws when value is an invalid one", () => {
             expect(() => config.S("hungry")).to.throw("Invalid value for hungry");
+            expect(() => config.string("hungry")).to.throw("Invalid value for hungry");
         });
 
         it("Throws when throwOnNotFound option is set to true", () => {
@@ -296,6 +315,7 @@ describe("Confs", () => {
             config = confs(configTwo);
 
             expect(() => config.S("cow")).to.throw("Did not find STRING option cow");
+            expect(() => config.string("cow")).to.throw("Did not find STRING option cow");
 
         });
 
@@ -334,18 +354,22 @@ describe("Confs", () => {
 
         it("Gets the ENV value", () => {
             expect(config.N("happy")).to.be.equal(100);
+            expect(config.number("happy")).to.be.equal(100);
         });
 
         it("Gets the ENV value and not the default when a default is set", () => {
             expect(config.N("three")).to.be.equal(3);
+            expect(config.number("three")).to.be.equal(3);
         });
 
         it("Gets the default value if not set in ENV", () => {
             expect(config.N("four")).to.be.equal(4);
+            expect(config.number("four")).to.be.equal(4);
         });
 
         it("Returns undefined when throwOnNotFound default value (false) is used", () => {
             expect(config.N("cow")).to.be.undefined;
+            expect(config.number("cow")).to.be.undefined;
         });
 
         it("Throws when transformNumberStrings is false (default) and a value is not a number", () => {
@@ -353,6 +377,10 @@ describe("Confs", () => {
             expect(() => config.N("two")).to.throw("Invalid value for two");
             expect(() => config.N("half")).to.throw("Invalid value for half");
             expect(() => config.N("what")).to.throw("Invalid value for what");
+
+            expect(() => config.number("two")).to.throw("Invalid value for two");
+            expect(() => config.number("half")).to.throw("Invalid value for half");
+            expect(() => config.number("what")).to.throw("Invalid value for what");
 
         });
 
@@ -374,10 +402,16 @@ describe("Confs", () => {
             expect(config2.N("what")).to.equal(0);
             expect(config2.N("five")).to.equal(5.25);
 
+            expect(config2.number("two")).to.equal(2);
+            expect(config2.number("half")).to.equal(0.5);
+            expect(config2.number("what")).to.equal(0);
+            expect(config2.number("five")).to.equal(5.25);
+
         });
 
         it("Throws when value is an invalid one", () => {
             expect(() => config.N("NAN")).to.throw("Invalid value for NAN");
+            expect(() => config.number("NAN")).to.throw("Invalid value for NAN");
         });
 
         it("Throws when throwOnNotFound option is set to true", () => {
@@ -391,6 +425,7 @@ describe("Confs", () => {
             const config2 = confs(configTwo);
 
             expect(() => config2.N("cow")).to.throw("Did not find NUMBER option cow");
+            expect(() => config2.number("cow")).to.throw("Did not find NUMBER option cow");
 
         });
 
