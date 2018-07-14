@@ -32,11 +32,10 @@ describe("Confs", () => {
             yes: "true",
         };
 
-        const configOne = {
-            ...base,
+        const configOne = Object.assign({}, base, {
             env: ourEnv,
             transformBooleanStrings: true,
-        };
+        });
 
         confs(configOne);
 
@@ -133,7 +132,7 @@ describe("Confs", () => {
 
     it("Checks for missing exit function when exitOnRequiredMissing is default or true", () => {
 
-        const configOne = { ...base };
+        const configOne = Object.assign({}, base);
 
         delete configOne["exit"];
 
@@ -143,22 +142,22 @@ describe("Confs", () => {
 
     it("Checks for duplicate required options", () => {
 
-        const configOne = {...base, required: {
+        const configOne = Object.assign({}, base, { required: {
                 boolean: ["one"],
                 number: ["one", "two", "three"],
                 string: ["one", "three"],
             },
-        };
+        });
 
         expect(() => confs(configOne)).to.throw("Found duplicated required options: one, three");
 
-        const configTwo = {
-            ...base, required: {
+        const configTwo = Object.assign({},
+            base, { required: {
                 boolean: ["two"],
                 number: ["one", "two", "three"],
                 string: [],
             },
-        };
+        });
 
         expect(() => confs(configTwo)).to.throw("Found duplicated required options: two");
 
@@ -166,8 +165,8 @@ describe("Confs", () => {
 
     it("Checks for duplicate default options", () => {
 
-        const configOne = {
-            ...base,
+        const configOne = Object.assign({},
+            base, {
             defaults: {
                 boolean: {
                     one: true,
@@ -180,7 +179,7 @@ describe("Confs", () => {
                     two: "two",
                 },
             },
-        };
+        });
 
         expect(() => confs(configOne)).to.throw("Found duplicated default options: one, two");
 
@@ -194,15 +193,15 @@ describe("Confs", () => {
 
         sinon.spy(fn, "exit");
 
-        const configOne = {
-            ...base,
+        const configOne = Object.assign({},
+            base, {
             exit: fn.exit,
             required: {
                 boolean: [],
                 number: ["one"],
                 string: [],
             },
-        };
+        });
 
         confs(configOne);
 
@@ -212,15 +211,15 @@ describe("Confs", () => {
 
     it("Throws for missing required options when exitOnMissingRequired is false", () => {
 
-        const configOne = {
-            ...base,
+        const configOne = Object.assign({},
+            base, {
             exitOnMissingRequired: false,
             required: {
                 boolean: [],
                 number: ["one"],
                 string: [],
             },
-        };
+        });
 
         expect(() => confs(configOne)).to.throw("Option one not found");
 
@@ -228,8 +227,8 @@ describe("Confs", () => {
 
     describe("Boolean configs", () => {
 
-        const configOne = {
-            ...base,
+        const configOne = Object.assign({},
+            base, {
             defaults: {
                 boolean: {
                     happy: false,
@@ -250,7 +249,7 @@ describe("Confs", () => {
                 number: [],
                 string: [],
             },
-        };
+        });
 
         const config = confs(configOne);
 
@@ -289,11 +288,11 @@ describe("Confs", () => {
 
         it("Throws when throwOnNotFound option is set to true", () => {
 
-            const configTwo = {
-                ...base,
-                ...configOne,
+            const configTwo = Object.assign({},
+                base,
+                configOne, {
                 throwOnNotFound: true,
-            };
+            });
 
             const config2 = confs(configTwo);
 
@@ -304,8 +303,8 @@ describe("Confs", () => {
 
         it("Converts boolean string values to actual boolean values", () => {
 
-            const configTwo = {
-                ...base,
+            const configTwo = Object.assign({},
+                base, {
                 env: {
                     no: "false",
                     ok: true,
@@ -317,7 +316,7 @@ describe("Confs", () => {
                     },
                 },
                 transformBooleanStrings: true,
-            };
+            });
 
             const config2 = confs(configTwo);
 
@@ -337,8 +336,8 @@ describe("Confs", () => {
 
     describe("String configs", () => {
 
-        const configOne = {
-            ...base,
+        const configOne = Object.assign({},
+            base, {
             defaults: {
                 boolean: {},
                 number: {},
@@ -360,7 +359,7 @@ describe("Confs", () => {
                 number: [],
                 string: ["hello"],
             },
-        };
+        });
 
         let config = confs(configOne);
 
@@ -391,11 +390,11 @@ describe("Confs", () => {
 
         it("Throws when throwOnNotFound option is set to true", () => {
 
-            const configTwo = {
-                ...base,
-                ...configOne,
+            const configTwo = Object.assign({},
+                base,
+                configOne, {
                 throwOnNotFound: true,
-            };
+            });
 
             config = confs(configTwo);
 
@@ -408,8 +407,8 @@ describe("Confs", () => {
 
     describe("Number configs", () => {
 
-        const configOne = {
-            ...base,
+        const configOne = Object.assign({},
+            base, {
             defaults: {
                 boolean: {},
                 number: {
@@ -433,7 +432,7 @@ describe("Confs", () => {
                 number: ["one"],
                 string: [],
             },
-        };
+        });
 
         const config = confs(configOne);
 
@@ -471,12 +470,12 @@ describe("Confs", () => {
 
         it("Transforms string numbers to actual numbers when using transformNumberStrings = true", () => {
 
-            const configTwo = {
-                ...base,
-                ...configOne,
+            const configTwo = Object.assign({},
+                base,
+                configOne, {
                 throwOnNotFound: true,
                 transformNumberStrings: true,
-            };
+            });
 
             configTwo.defaults.number.five = "5.25";
 
@@ -501,11 +500,11 @@ describe("Confs", () => {
 
         it("Throws when throwOnNotFound option is set to true", () => {
 
-            const configTwo = {
-                ...base,
-                ...configOne,
+            const configTwo = Object.assign({},
+                base,
+                configOne, {
                 throwOnNotFound: true,
-            };
+            });
 
             const config2 = confs(configTwo);
 
