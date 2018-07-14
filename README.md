@@ -22,9 +22,9 @@ $ npm install confs
 ## Usage
 
 ```js
-const confs = require('confs');
+const confs = require('confs').confs;
 const config = confs({
-    env: process.env,
+    env: process.env, // Assuming you have something like Dotenv
     transformBooleanStrings: true,
     transformNumberStrings: true,
     exitOnMissingRequired: false,
