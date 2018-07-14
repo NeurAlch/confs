@@ -325,11 +325,121 @@ const transform = (options: IConfsOptions): void => {
 
 }
 
+const isObject = (obj: any): boolean => {
+
+    if (obj === undefined || obj === null) {
+        return false;
+    }
+
+    if (typeof obj !== "object") {
+        return false;
+    }
+
+    if (obj.constructor !== Object) {
+        return false;
+    }
+
+    if (obj instanceof Array) {
+        return false;
+    }
+
+    if (obj instanceof Date) {
+        return false;
+    }
+
+    return true;
+
+}
+
+const isArray = (arr: any): boolean => {
+
+    if (arr === undefined || arr === null) {
+        return false
+    }
+
+    if (arr instanceof Array) {
+        return true;
+    }
+
+    return false;
+
+}
+
+const checkRequiredArrayOfStrings = (arr: any[]): void => {
+
+    for (const a of arr) {
+        if (typeof a === "string" || a instanceof String) {
+            continue;
+        } else {
+            throw new ConfsError(`Invalid required option ${a} should be a string`);
+        }
+    }
+
+}
+
+const checkTypes = (opts: IConfsOptions): void => {
+
+    if (opts.env === undefined || isObject(opts.env) === false) {
+        throw new ConfsError("env option should be an object");
+    }
+
+    if (opts.defaults !== undefined) {
+
+        if (isObject(opts.defaults) === false) {
+            throw new ConfsError("defaults option should be an object");
+        }
+
+        if (opts.defaults.boolean !== undefined && isObject(opts.defaults.boolean) === false) {
+            throw new ConfsError("defaults.boolean option should be an object");
+        }
+
+        if (opts.defaults.number !== undefined && isObject(opts.defaults.number) === false) {
+            throw new ConfsError("defaults.number option should be an object");
+        }
+
+        if (opts.defaults.string !== undefined && isObject(opts.defaults.string) === false) {
+            throw new ConfsError("defaults.string option should be an object");
+        }
+
+    }
+
+    if (opts.required !== undefined) {
+
+        if (isObject(opts.required) === false) {
+            throw new ConfsError("required option should be an object");
+        }
+
+        if (opts.required.boolean !== undefined) {
+            if (isArray(opts.required.boolean) === false) {
+                throw new ConfsError("required.boolean option should be an array");
+            } else {
+                checkRequiredArrayOfStrings(opts.required.boolean);
+            }
+        }
+
+        if (opts.required.number !== undefined) {
+            if (isArray(opts.required.number) === false) {
+                throw new ConfsError("required.number option should be an array");
+            } else {
+                checkRequiredArrayOfStrings(opts.required.number);
+            }
+        }
+
+        if (opts.required.string !== undefined) {
+            if (isArray(opts.required.string) === false) {
+                throw new ConfsError("required.string option should be an array");
+            } else {
+                checkRequiredArrayOfStrings(opts.required.string);
+            }
+        }
+
+    }
+
+}
+
 const confs = (opts: IConfsOptions): IConfs => {
 
-    // TODO: Check that env is an object
-    // TODO: Check that required is an object, also its children are lists of strings
-    // TODO: Check that defaults is an object, also its children
+    checkTypes(opts);
 
     const options = getCopy(opts);
 
