@@ -1,6 +1,9 @@
-import { DuplicatedDefaultError } from "./errors/DuplicatedDefaultError";
-import { DuplicatedRequiredError } from "./errors/DuplicatedRequiredError";
-import { MissingExitFunction } from "./errors/MissingExitFunction";
+export class ConfsError extends Error {
+    public constructor(message: string) {
+        super();
+        this.message = message;
+    }
+}
 
 interface IConfsOptions {
     defaults?: {
@@ -64,11 +67,11 @@ const getStringFn = (options: IConfsOptions): getStringFn => (config: string): s
     } else if (options.defaults && options.defaults.string && options.defaults.string[config] !== undefined) {
         value = options.defaults.string[config];
     } else if (options.throwOnNotFound === true) {
-        throw new Error(`Did not find STRING option ${config}`);
+        throw new ConfsError(`Did not find STRING option ${config}`);
     }
 
     if (value !== undefined && typeof value !== "string") {
-        throw new Error(`Invalid value for ${config}`);
+        throw new ConfsError(`Invalid value for ${config}`);
     }
 
     return value;
@@ -84,7 +87,7 @@ const getBooleanFn = (options: IConfsOptions): getBooleanFn => (config: string):
     } else if (options.defaults && options.defaults.boolean && options.defaults.boolean[config] !== undefined) {
         value = options.defaults.boolean[config];
     } else if (options.throwOnNotFound === true) {
-        throw new Error(`Did not find BOOLEAN option ${config}`);
+        throw new ConfsError(`Did not find BOOLEAN option ${config}`);
     }
 
     if (value === "true") {
@@ -94,7 +97,7 @@ const getBooleanFn = (options: IConfsOptions): getBooleanFn => (config: string):
     }
 
     if (value !== undefined && typeof value !== "boolean") {
-        throw new Error(`Invalid value for ${config}`);
+        throw new ConfsError(`Invalid value for ${config}`);
     }
 
     return value;
@@ -110,11 +113,11 @@ const getNumberFn = (options: IConfsOptions): getNumberFn => (config: string): n
     } else if (options.defaults && options.defaults.number && options.defaults.number[config] !== undefined) {
         value = options.defaults.number[config];
     } else if (options.throwOnNotFound === true) {
-        throw new Error(`Did not find NUMBER option ${config}`);
+        throw new ConfsError(`Did not find NUMBER option ${config}`);
     }
 
     if (value !== undefined && (typeof value !== "number" || isNaN(value) === true)) {
-        throw new Error(`Invalid value for ${config}`);
+        throw new ConfsError(`Invalid value for ${config}`);
     }
 
     return value;
@@ -136,7 +139,7 @@ const checkRequired = (options: IConfsOptions): void => {
     const duplicateRequired: string[] = getDuplicated(required);
 
     if (duplicateRequired.length > 0) {
-        throw new DuplicatedRequiredError(`Found duplicated required options: ${duplicateRequired.join(", ")}`);
+        throw new ConfsError(`Found duplicated required options: ${duplicateRequired.join(", ")}`);
     }
 
     for (const k of required) {
@@ -148,7 +151,7 @@ const checkRequired = (options: IConfsOptions): void => {
             if (options.exitOnMissingRequired === true && options.exit) {
                 options.exit(err);
             } else {
-                throw Error(err);
+                throw new ConfsError(err);
             }
 
         }
@@ -172,7 +175,7 @@ const checkDuplicatedDefaults = (options: IConfsOptions): void => {
     const duplicateDefaults: string[] = getDuplicated(defaults);
 
     if (duplicateDefaults.length > 0) {
-        throw new DuplicatedDefaultError(`Found duplicated default options: ${duplicateDefaults.join(", ")}`);
+        throw new ConfsError(`Found duplicated default options: ${duplicateDefaults.join(", ")}`);
     }
 
 };
@@ -205,7 +208,7 @@ const confs = (opts: IConfsOptions): IConfs => {
     }
 
     if (options.exitOnMissingRequired === true && options.exit === undefined) {
-        throw new MissingExitFunction("Missing exit function");
+        throw new ConfsError("Missing exit function");
     }
 
     checkRequired(options);
@@ -259,7 +262,4 @@ const confs = (opts: IConfsOptions): IConfs => {
 export {
     confs,
     IConfsOptions,
-    DuplicatedRequiredError,
-    DuplicatedDefaultError,
-    MissingExitFunction,
 };
