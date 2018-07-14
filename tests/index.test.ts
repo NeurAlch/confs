@@ -1,11 +1,13 @@
 // tslint:disable:no-implicit-dependencies newline-per-chained-call no-unused-expression no-magic-numbers
 
 import * as chai from "chai";
-import { describe, it } from "mocha";
 import * as sinon from "sinon";
-import * as sinonChai from "sinon-chai";
+import { describe, it } from "mocha";
+
+const sinonChai = require("sinon-chai");
 
 chai.use(sinonChai);
+
 const expect = chai.expect;
 
 import { confs, IConfsOptions } from "../src/index";

@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "esModuleInterop": false,
+        "outDir": "./lib-tests",
+        "types": ["node", "mocha", "sinon", "sinon-chai"],
+    },
+    "include": [
+        "src/**/*.ts",
+        "tests/**/*.ts",
+    ],
+    "exclude": [
+        "node_modules",
+        "lib",
+    ]
+}

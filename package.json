@@ -1,6 +1,6 @@
 {
 	"name": "confs",
-	"version": "0.10.5",
+	"version": "0.10.6",
 	"description": "Simple Configuration with defaults and required options",
 	"license": "MIT",
 	"repository": "https://github.com/pablorosales/confs",
@@ -21,8 +21,9 @@
 	},
 	"scripts": {
 		"setup": "npm install",
-		"pretest": "npm run build",
-		"test": "mocha lib/tests",
+		"pretest": "npm run build && npm run build-tests",
+		"test": "mocha ./lib-tests/tests/index.test.js",
+		"build-tests": "tsc --project tsconfig.test.json",
 		"build": "tsc"
 	},
 	"files": [
@@ -41,6 +42,7 @@
 	"devDependencies": {
 		"@types/chai": "^4.1.4",
 		"@types/mocha": "^5.2.4",
+		"@types/node": "^10.5.2",
 		"@types/sinon": "^5.0.1",
 		"@types/sinon-chai": "^3.2.0",
 		"chai": "^4.1.2",

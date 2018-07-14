@@ -15,15 +15,16 @@
         "importHelpers": false,
         "sourceMap": false,
         "declaration": true,
+        "esModuleInterop": true,
         "types": [],
-        "lib": ["es6"],
-        "moduleResolution": "node",
+        "lib": ["es6"]
     },
     "include": [
         "src/**/*.ts",
-        "tests/**/*.ts"
     ],
     "exclude": [
         "node_modules",
+        "tests/**/*.ts",
+        "lib"
     ]
 }
