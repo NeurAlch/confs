@@ -46,6 +46,91 @@ describe("Confs", () => {
 
     });
 
+    it("Checks that env, defaults and required are of the correct type", () => {
+
+        expect(() => confs({
+            env: "",
+        })).to.throw("env option should be an object");
+
+        // required
+
+        expect(() => confs({
+            env: {},
+            required: "",
+        })).to.throw("required option should be an object");
+
+        expect(() => confs({
+            env: {},
+            required: {
+                boolean: "",
+            },
+        })).to.throw("required.boolean option should be an array");
+
+        expect(() => confs({
+            env: {},
+            required: {
+                boolean: [1],
+            },
+        })).to.throw("Invalid required option 1 should be a string");
+
+        expect(() => confs({
+            env: {},
+            required: {
+                number: "",
+            },
+        })).to.throw("required.number option should be an array");
+
+        expect(() => confs({
+            env: {},
+            required: {
+                number: [1],
+            },
+        })).to.throw("Invalid required option 1 should be a string");
+
+        expect(() => confs({
+            env: {},
+            required: {
+                string: "",
+            },
+        })).to.throw("required.string option should be an array");
+
+        expect(() => confs({
+            env: {},
+            required: {
+                string: [1],
+            },
+        })).to.throw("Invalid required option 1 should be a string");
+
+        // defaults
+
+        expect(() => confs({
+            env: {},
+            defaults: "",
+        })).to.throw("defaults option should be an object");
+
+        expect(() => confs({
+            env: {},
+            defaults: {
+                boolean: "",
+            },
+        })).to.throw("defaults.boolean option should be an object");
+
+        expect(() => confs({
+            env: {},
+            defaults: {
+                number: "",
+            },
+        })).to.throw("defaults.number option should be an object");
+
+        expect(() => confs({
+            env: {},
+            defaults: {
+                string: "",
+            },
+        })).to.throw("defaults.string option should be an object");
+
+    });
+
     it("Checks for missing exit function when exitOnRequiredMissing is default or true", () => {
 
         const configOne = { ...base };
