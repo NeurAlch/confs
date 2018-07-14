@@ -180,16 +180,56 @@ const checkDuplicatedDefaults = (options: IConfsOptions): void => {
 
 };
 
-const confs = (opts: IConfsOptions): IConfs => {
+const getCopy = (opts: IConfsOptions): IConfsOptions => {
 
-    // TODO: Check that env is an object
-    // TODO: Check that required is an object, also its children are lists of strings
-    // TODO: Check that defaults is an object, also its children
+    const options: IConfsOptions = {
+        transformBooleanStrings: opts.transformBooleanStrings,
+        transformNumberStrings: opts.transformNumberStrings,
+        exitOnMissingRequired: opts.exitOnMissingRequired,
+        throwOnNotFound: opts.throwOnNotFound,
+        exit: opts.exit,
+        defaults: {
+            boolean: {},
+            number: {},
+            string: {},
+        },
+        required: {
+            boolean: [],
+            number: [],
+            string: [],
+        },
+        env: {},
+    };
 
-    const options = { ...opts };
+    if (opts.required) {
+        options.required = { ...opts.required };
+    }
+
     const env = { ...opts.env };
 
+    if (opts.defaults && options.defaults) {
+
+        if (opts.defaults.boolean) {
+            options.defaults.boolean = { ...opts.defaults.boolean };
+        }
+
+        if (opts.defaults.number) {
+            options.defaults.number = { ...opts.defaults.number };
+        }
+
+        if (opts.defaults.string) {
+            options.defaults.string = { ...opts.defaults.string };
+        }
+
+    }
+
     options.env = env;
+
+    return options;
+
+}
+
+const setDefaults = (options: IConfsOptions): void => {
 
     if (options.throwOnNotFound === undefined) {
         options.throwOnNotFound = false;
@@ -207,42 +247,101 @@ const confs = (opts: IConfsOptions): IConfs => {
         options.transformNumberStrings = false;
     }
 
+}
+
+const transform = (options: IConfsOptions): void => {
+
+    if (options.transformBooleanStrings === true || options.transformNumberStrings === true) {
+
+        const keys: string[] = Object.keys(options.env);
+
+        for (const key of keys) {
+
+            let value = options.env[key];
+
+            if (options.transformBooleanStrings === true) {
+
+                if (value === "true") {
+                    options.env[key] = true;
+                } else if (value === "false") {
+                    options.env[key] = false;
+                }
+
+            } else if (options.transformNumberStrings === true) {
+
+                if (value !== undefined && typeof value === "string") {
+                    value = parseFloat(value);
+                    if (isNaN(value) === false) {
+                        options.env[key] = value;
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
+    if (options.transformBooleanStrings === true && (options.defaults && options.defaults.boolean)) {
+
+        const keys: string[] = Object.keys(options.defaults.boolean);
+
+        for (const key of keys) {
+
+            let value = options.defaults.boolean[key];
+
+            if (typeof value === "string") {
+
+                if (value === "true") {
+                    options.defaults.boolean[key] = true;
+                } else if (value === "false") {
+                    options.defaults.boolean[key] = false;
+                }
+
+            }
+
+        }
+
+    }
+
+    if (options.transformNumberStrings === true && (options.defaults && options.defaults.number)) {
+
+        const keys: string[] = Object.keys(options.defaults.number);
+
+        for (const key of keys) {
+
+            let value = options.defaults.number[key];
+
+            if (value !== undefined && typeof value === "string") {
+                value = parseFloat(value);
+                if (isNaN(value) === false) {
+                    options.defaults.number[key] = value;
+                }
+            }
+
+        }
+
+    }
+
+}
+
+const confs = (opts: IConfsOptions): IConfs => {
+
+    // TODO: Check that env is an object
+    // TODO: Check that required is an object, also its children are lists of strings
+    // TODO: Check that defaults is an object, also its children
+
+    const options = getCopy(opts);
+
+    setDefaults(options);
+
     if (options.exitOnMissingRequired === true && options.exit === undefined) {
         throw new ConfsError("Missing exit function");
     }
 
     checkRequired(options);
     checkDuplicatedDefaults(options);
-
-    if (options.transformBooleanStrings === true) {
-
-        const keys: string[] = Object.keys(options.env);
-
-        for (const key of keys) {
-            if (options.env[key] === "true") {
-                options.env[key] = true;
-            } else if (options.env[key] === "false") {
-                options.env[key] = false;
-            }
-        }
-
-    }
-
-    if (options.transformNumberStrings === true) {
-
-        const keys: string[] = Object.keys(options.env);
-
-        for (const key of keys) {
-            let value = options.env[key];
-            if (value !== undefined && typeof value === "string") {
-                value = parseFloat(value);
-                if (isNaN(value) === false) {
-                    options.env[key] = value;
-                }
-            }
-        }
-
-    }
+    transform(options);
 
     const B = getBooleanFn(options);
     const N = getNumberFn(options);
