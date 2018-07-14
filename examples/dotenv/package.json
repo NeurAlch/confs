@@ -4,11 +4,12 @@
   "description": "Example for Confu with Dotenv",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node index.js"
   },
   "author": "Pablo Rosales",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^6.0.0"
+    "dotenv": "^6.0.0",
+    "confs": "^0.10.8"
   }
 }

@@ -1,16 +1,16 @@
 require('dotenv').config();
 
 const assert = require('assert');
-const confu = require("../../lib/index").confu;
+const confs = require("confs").confs;
 
-const config = confu({
+const config = confs({
     env: process.env,
     transformBooleanStrings: true,
     transformNumberStrings: true,
     exitOnMissingRequired: false,
     defaults: {
         string: {
-            name: "Confu",
+            name: "Confs",
         },
         boolean: {
             yes: "true",
@@ -21,7 +21,7 @@ const config = confu({
     },
 });
 
-assert.strictEqual(config.string("name"), "Confu");
+assert.strictEqual(config.string("name"), "Confs");
 assert.strictEqual(config.S("MY_STRING"), "Hello World");
 
 assert.strictEqual(config.boolean("yes"), true);
