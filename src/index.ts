@@ -267,7 +267,9 @@ const transform = (options: IConfsOptions): void => {
                     options.env[key] = false;
                 }
 
-            } else if (options.transformNumberStrings === true) {
+            }
+
+            if (options.transformNumberStrings === true) {
 
                 if (value !== undefined && typeof value === "string") {
                     value = parseFloat(value);
