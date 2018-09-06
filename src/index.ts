@@ -271,7 +271,7 @@ const transform = (options: IConfsOptions): void => {
 
             if (options.transformNumberStrings === true) {
 
-                if (value !== undefined && typeof value === "string") {
+                if (value !== undefined && typeof value === "string" && /^\d+$/.test(value)) {
                     value = parseFloat(value);
                     if (isNaN(value) === false) {
                         options.env[key] = value;
