@@ -477,25 +477,29 @@ describe("Confs", () => {
                 transformNumberStrings: true,
             });
 
-            configTwo.defaults.number.five = "5.25";
+            configTwo.defaults.number.five = "5";
 
             const config2 = confs(configTwo);
 
             expect(config2.N("two")).to.equal(2);
-            expect(config2.N("half")).to.equal(0.5);
-            expect(config2.N("what")).to.equal(0);
-            expect(config2.N("five")).to.equal(5.25);
+            expect(config2.N("five")).to.equal(5);
 
             expect(config2.number("two")).to.equal(2);
-            expect(config2.number("half")).to.equal(0.5);
-            expect(config2.number("what")).to.equal(0);
-            expect(config2.number("five")).to.equal(5.25);
+            expect(config2.number("five")).to.equal(5);
 
         });
 
         it("Throws when value is an invalid one", () => {
+
             expect(() => config.N("NAN")).to.throw("Invalid value for NAN");
             expect(() => config.number("NAN")).to.throw("Invalid value for NAN");
+
+            expect(() => config.N("what")).to.throw("Invalid value for what");
+            expect(() => config.number("what")).to.throw("Invalid value for what");
+
+            expect(() => config.N("half")).to.throw("Invalid value for half");
+            expect(() => config.number("half")).to.throw("Invalid value for half");
+
         });
 
         it("Throws when throwOnNotFound option is set to true", () => {
