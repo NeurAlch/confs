@@ -314,7 +314,7 @@ const transform = (options: IConfsOptions): void => {
 
             let value = options.defaults.number[key];
 
-            if (value !== undefined && typeof value === "string") {
+            if (value !== undefined && typeof value === "string" && /^\d+$/.test(value)) {
                 value = parseFloat(value);
                 if (isNaN(value) === false) {
                     options.defaults.number[key] = value;
